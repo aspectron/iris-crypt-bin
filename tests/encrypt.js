@@ -3,11 +3,11 @@ var path = require('path');
 
 console.log('crypt exports:', crypt);
 
-var serial = 1234;
-if (process.argv.length > 2) serial = +process.argv[2];
+var password = process.argv[2] || 'password';
+var serial = +process.argv[3] || 1234;
+var filename = process.argv[4] || 'test.pkg';
 
-var auth = crypt.generateAuth(serial);
-var filename = 'test.pkg';
+var auth = crypt.generateAuth(password, serial);
 
 console.log('');
 console.log('generated auth for serial %s: %s', serial, auth);

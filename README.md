@@ -2,7 +2,12 @@
 
 Store Node.js modules encrypted in a package file.
 
-**Requires: Node.js version 0.12**
+**Requires: Node.js version >=0.12**
+
+## Building
+
+Run `npm rebuild` to build native addon from the project sources. Additional
+command line option `--target` allows to set specific Node.js version.
 
 ## Using
 
@@ -32,14 +37,16 @@ function to load a particular module.
 var irisCrypt = require('iris-crypt');
 ```
 
-### generateAuth(serial)
+### generateAuth(password, serial)
 
-Create an authorization key string based on a `serial` number.
-The serial number must be in a range [0..65535].
+Create an authorization key string based on a `password` string
+and `serial` number. The serial number must be in a range [0..65535].
 
 ```
+var password = 'zzz';
 var serial = 1234;
-var auth = irisCrypt.makeAuth(serial); // auth = 'XXXX-XXXX-XXXX-XXXX-YYYY-ZZZZ'
+var auth = irisCrypt.makeAuth(password, serial);
+// assert(auth == 'EK4Z-3Z1E-SE4J-ANMZ-X390-917Z')
 ```
 
 ### package(auth, filename, files)
@@ -79,15 +86,6 @@ var module1 = pkg.require('module1_name');
 var module2 = pkg.require('module2_name');
 
 var fs = pkg.require('fs'); // load native Node.js module
-```
-
-### Package.key
-
-Public part of auth key that was used to create the package.
-Read-only property.
-
-```
-var key = pkg.key; // 'YYYY-ZZZZ' part of auth
 ```
 
 ### Package.serial
